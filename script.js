@@ -5,7 +5,7 @@ window.onload = function() {
 }
 
 function poruszanie(height,width){
-    var figury = document.querySelectorAll('.figura');
+    var figury = document.querySelectorAll(".figury");
     var wspolrzednaX, wspolrzednaY, element;
 
     function startRuchu(e,That){
