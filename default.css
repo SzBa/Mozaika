@@ -1,7 +1,12 @@
+html{
+	overscroll-behavior-y:contain;
+}
+
 body{
     width: 100%;
     margin: 0;
     background-color: white;
+	overscroll-behavior-y:contain;
 }
 
 footer {

@@ -1,10 +1,10 @@
 window.onload = function() {
     //zczytanie tylko szerokosci i wysokosci
-    poruszanie(window.innerHeight, window.innerWidth);
+    Poruszanie(window.innerHeight, window.innerWidth);
     //odswiez();
 }
 
-function poruszanie(height,width){
+function Poruszanie(height,width){
     var figury = document.querySelectorAll(".figury");
     var wspolrzednaX, wspolrzednaY, element;
 
@@ -20,7 +20,7 @@ function poruszanie(height,width){
         }
     }
 
-    function RuchMyszka(e){
+    function ruchMyszka(e){
         window.addEventListener('mousemove', ruchMyszkiLubDotykuZapisPozycji, true);
         window.addEventListener('mouseup', koniecRuchu, true);
         startRuchu(e, this);
@@ -45,6 +45,7 @@ function poruszanie(height,width){
         if (e.changedTouches.length > 0) {
             ruchMyszkiLubDotykuZapisPozycji(e.changedTouches[0]);
         }
+		//zeby nie odswiezalo jak sie figury w dol da
         //anuluje zdarzenie
         e.preventDefault();
         //Przerywa dalsze propagowanie bieżącego zdarzenia.
@@ -52,9 +53,75 @@ function poruszanie(height,width){
     }
     for (var i = 0; i < figury.length; i++) {
         var figura = figury[i];
-        figura.addEventListener('mousedown', RuchMyszka, true);
+        figura.addEventListener('mousedown', ruchMyszka, true);
         figura.addEventListener('touchstart', ruchDotykiem, false);
         figura.addEventListener('touchmove', Dotyk, false);
     }
-
 }
+
+function ustawCss(){
+    var request = new XMLHttpRequest();
+    //otrzymanie odpowiedzi od serwera
+    request.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            var response = this.responseText;
+            console.log("Ustawiony CSS:" + response);
+            document.getElementById("pagestyle").setAttribute("href", response);
+        }
+    }
+    request.open("POST", "praca.php", true);
+    request.send(JSON.stringify({ 
+        polecenie: 1
+    }));
+}
+
+function odswiez(){
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        
+        if (this.readyState == 4 && this.status == 200) {
+
+            var response = JSON.parse(this.responseText);
+
+            document.getElementById("kwadrat").style.top = response.kwadratx;
+            document.getElementById("kwadrat").style.left = response.kwadraty;
+
+            document.getElementById("prostokat").style.top = response.prostokatx;
+            document.getElementById("prostokat").style.left = response.prostokaty;
+
+            document.getElementById("kolo").style.top = response.kolox;
+            document.getElementById("kolo").style.left = response.koloy;
+            
+            document.getElementById("trojkat").style.top = response.trojkatx;
+            document.getElementById("trojkat").style.left = response.trojkaty;
+  
+        }
+    }
+    request.open("POST", "praca.php", true);
+    request.send(JSON.stringify({
+        polecenie: 2
+    }));
+}
+
+function wyslijNaSerwer() {
+    var request = new XMLHttpRequest();
+    request.open("POST", "praca.php", true);
+    request.send(JSON.stringify({
+        polecenie: 3,
+
+        "kwadratx": document.getElementById("kwadrat").style.top,
+        "kwadraty": document.getElementById("kwadrat").style.left,
+
+        "prostokatx": document.getElementById("prostokat").style.top,
+        "prostokaty": document.getElementById("prostokat").style.left,
+
+        "kolox": document.getElementById("kolo").style.top,
+        "koloy": document.getElementById("kolo").style.left,
+
+        "trojkatx": document.getElementById("trojkat").style.top,
+        "trojkaty": document.getElementById("trojkat").style.left,
+
+    }));
+}
+
+setInterval(odswiez, 800);
