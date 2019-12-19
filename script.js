@@ -1,7 +1,9 @@
 window.onload = function() {
     //zczytanie tylko szerokosci i wysokosci
     Poruszanie(window.innerHeight, window.innerWidth);
-    //odswiez();
+    ustawCss();
+    odswiez();
+
 }
 
 function Poruszanie(height,width){
@@ -33,7 +35,7 @@ function Poruszanie(height,width){
         wspolrzednaY = e.pageY;
         element.style.top = (element.offsetTop + dy) + 'px';
         element.style.left = (element.offsetLeft + dx) + 'px';
-        //Wyslij();
+        wyslijNaSerwer();
     }
 
     function koniecRuchu(){
@@ -78,7 +80,7 @@ function ustawCss(){
 function odswiez(){
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
-        
+
         if (this.readyState == 4 && this.status == 200) {
 
             var response = JSON.parse(this.responseText);
@@ -124,4 +126,4 @@ function wyslijNaSerwer() {
     }));
 }
 
-setInterval(odswiez, 800);
+setInterval(odswiez, 600);

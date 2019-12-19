@@ -15,16 +15,15 @@
         switch($polecenie)
         {
             case 1: 
-                
+
                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
                 if (strpos($user_agent, 'Android')){
                     echo 'androidStyle.css';
                 }
-
                 else if (strpos($user_agent, 'Windows')){
                     echo 'windowsStyle.css';
                 }
-                
                 else if(strpos($user_agent, 'Mac')){
                     echo 'iOSstyle.css';
                 }
